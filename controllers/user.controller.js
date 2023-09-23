@@ -6,9 +6,8 @@ import sendEmail from '../utils/sendEmail.js'
 import crypto from 'crypto'
 
 const cookieOptions = {
-    maxAge : 7 * 24 * 60 * 60 * 1000,  // 7 days
     httpOnly: true,
-    secure: true
+    expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000)
 }
 
 const register = async (req, res, next) => {
@@ -34,6 +33,7 @@ const register = async (req, res, next) => {
             secure_url: 'https://res.cloudinary.com/du9jzqlpt/image/upolad'
          }
    })
+   
 
    if(!user){
     return next(new AppError('User registeration failed, please try again', 400))
@@ -105,7 +105,7 @@ const login = async (req, res, next) => {
      res.status(200).json({
          success: true,
          message: 'User loggedin successfully',
-         user
+         user,
         })
     } catch (e) {
         return next (new AppError(e.message, 500))
